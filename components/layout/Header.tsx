@@ -126,18 +126,18 @@ export default function Header() {
 
   return (
     <>
-      <header className="navbar-sticky">
+      <header className="bg-primary text-primary-content shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
                 <Trophy size={18} className="text-white" />
               </div>
-              <span className="font-display font-bold text-xl text-primary hidden sm:block">
-                Eagle<span className="text-secondary">Predict</span>
+              <span className="font-display font-bold text-xl text-white hidden sm:block">
+                eagle<span className="text-yellow-300">Predict</span>
               </span>
-              <span className="font-display font-bold text-xl text-primary sm:hidden">EP</span>
+              <span className="font-display font-bold text-xl text-white sm:hidden">EP</span>
             </Link>
 
             {/* Desktop Nav */}
@@ -145,7 +145,7 @@ export default function Header() {
               <Link
                 href="/"
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === "/" ? "bg-primary/10 text-primary" : "hover:bg-base-200"
+                  pathname === "/" ? "bg-white/20 text-white" : "hover:bg-white/10 text-white/80"
                 }`}
               >
                 <Home size={15} />
@@ -161,8 +161,8 @@ export default function Header() {
                       }
                       className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                         pathname.startsWith(nav.href)
-                          ? "bg-primary/10 text-primary"
-                          : "hover:bg-base-200"
+                          ? "bg-white/20 text-white"
+                          : "hover:bg-white/10 text-white/80"
                       }`}
                     >
                       {nav.icon}
@@ -176,7 +176,7 @@ export default function Header() {
                     </button>
 
                     {activeDropdown === nav.label && (
-                      <div className="absolute top-full left-0 mt-1 w-56 bg-base-100 border border-base-300 rounded-xl shadow-xl z-50 overflow-hidden">
+                      <div className="absolute top-full left-0 mt-1 w-56 bg-base-100 border border-base-300 rounded-xl shadow-xl z-50 overflow-hidden text-base-content">
                         {nav.children.map((child) => (
                           <Link
                             key={child.href}
@@ -198,8 +198,8 @@ export default function Header() {
                     href={nav.href}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       pathname.startsWith(nav.href)
-                        ? "bg-primary/10 text-primary"
-                        : "hover:bg-base-200"
+                        ? "bg-white/20 text-white"
+                        : "hover:bg-white/10 text-white/80"
                     }`}
                   >
                     {nav.icon}
@@ -214,7 +214,7 @@ export default function Header() {
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
-                className="btn btn-ghost btn-sm btn-circle"
+                className="btn btn-ghost btn-sm btn-circle text-white hover:bg-white/10"
                 aria-label="Toggle theme"
               >
                 {theme === "eaglelight" ? <Moon size={18} /> : <Sun size={18} />}
@@ -223,23 +223,18 @@ export default function Header() {
               {/* Auth */}
               {session?.user ? (
                 <div className="dropdown dropdown-end">
-                  <label tabIndex={0} className="btn btn-ghost btn-sm gap-2">
-                    <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
+                  <label tabIndex={0} className="btn btn-ghost btn-sm gap-2 text-white hover:bg-white/10">
+                    <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold">
                       {session.user.name?.[0]?.toUpperCase() ?? "U"}
                     </div>
                     <span className="hidden sm:inline text-sm font-medium max-w-[100px] truncate">
                       {session.user.name}
                     </span>
                   </label>
-                  <ul tabIndex={0} className="dropdown-content menu menu-sm bg-base-100 border border-base-300 rounded-xl shadow-xl w-48 mt-1 z-50">
+                  <ul tabIndex={0} className="dropdown-content menu menu-sm bg-base-100 border border-base-300 rounded-xl shadow-xl w-48 mt-1 z-50 text-base-content">
                     <li>
                       <Link href="/profile" className="flex items-center gap-2">
                         <User size={15} /> My Profile
-                      </Link>
-                    </li>
-                    <li>
-                      <Link href="/profile/notifications" className="flex items-center gap-2">
-                        <Bell size={15} /> Notifications
                       </Link>
                     </li>
                     <li>
@@ -254,11 +249,11 @@ export default function Header() {
                 </div>
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
-                  <Link href="/login" className="btn btn-ghost btn-sm gap-1.5">
+                  <Link href="/login" className="btn btn-ghost btn-sm gap-1.5 text-white hover:bg-white/10">
                     <LogIn size={15} />
                     Login
                   </Link>
-                  <Link href="/signup" className="btn btn-primary btn-sm gap-1.5">
+                  <Link href="/signup" className="btn btn-sm bg-white text-primary hover:bg-white/90 border-0 gap-1.5">
                     Sign Up
                   </Link>
                 </div>
@@ -266,7 +261,7 @@ export default function Header() {
 
               {/* Mobile hamburger */}
               <button
-                className="btn btn-ghost btn-sm btn-circle lg:hidden"
+                className="btn btn-ghost btn-sm btn-circle lg:hidden text-white hover:bg-white/10"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open menu"
               >

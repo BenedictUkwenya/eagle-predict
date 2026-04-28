@@ -56,7 +56,7 @@ body {
 
 /* ─── League section divider ───────────────────── */
 .league-header {
-  @apply flex items-center gap-2 px-4 py-2 bg-base-200 border-b border-base-300 font-semibold text-sm;
+  @apply flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-content font-semibold text-sm;
 }
 
 /* ─── Odds cell ─────────────────────────────────── */

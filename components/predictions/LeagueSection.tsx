@@ -1,47 +1,59 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import type { League, Match } from "@/types";
 import MatchCard from "./MatchCard";
+import { Plus, Minus } from "lucide-react";
 
 interface Props {
   league: League;
   matches: Match[];
+  defaultOpen?: boolean;
 }
 
-export default function LeagueSection({ league, matches }: Props) {
+export default function LeagueSection({ league, matches, defaultOpen = true }: Props) {
+  const [open, setOpen] = useState(defaultOpen);
   if (!matches.length) return null;
 
   return (
-    <div className="mb-6">
+    <div className="mb-3 rounded-xl overflow-hidden border border-base-300 shadow-sm">
       {/* League header */}
-      <div className="league-header rounded-t-xl sticky top-16 z-10">
-        <div className="w-5 h-5 rounded-sm overflow-hidden bg-base-300 flex-shrink-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-2 px-4 py-2.5 bg-primary text-primary-content hover:bg-primary/90 transition-colors"
+      >
+        <div className="w-5 h-4 rounded-sm overflow-hidden bg-white/20 flex-shrink-0">
           <img
             src={`https://flagcdn.com/w40/${league.countryCode.toLowerCase()}.png`}
             alt={league.country}
             className="w-full h-full object-cover"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = "none";
-            }}
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
           />
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 text-left">
           <span className="font-semibold text-sm">{league.name}</span>
-          <span className="text-base-content/50 text-xs ml-1.5">{league.country}</span>
+          <span className="text-primary-content/70 text-xs ml-1.5">{league.country}</span>
         </div>
         <Link
           href={`/league/${league.slug}`}
-          className="text-xs text-primary hover:underline flex-shrink-0"
+          onClick={(e) => e.stopPropagation()}
+          className="text-[10px] text-primary-content/70 hover:text-primary-content mr-3"
         >
           View all
         </Link>
-      </div>
+        {open ? <Minus size={16} /> : <Plus size={16} />}
+      </button>
 
-      {/* Match cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 p-3 bg-base-200/30 border border-t-0 border-base-300 rounded-b-xl">
-        {matches.map((match) => (
-          <MatchCard key={match.id} match={match} />
-        ))}
-      </div>
+      {/* Match rows */}
+      {open && (
+        <div className="bg-base-100">
+          {matches.map((match) => (
+            <MatchCard key={match.id} match={match} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
+
