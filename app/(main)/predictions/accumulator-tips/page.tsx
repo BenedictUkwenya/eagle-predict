@@ -1,5 +1,6 @@
 import { ACCUMULATORS, BETTING_SITES } from "@/lib/mockData";
 import MatchCard from "@/components/predictions/MatchCard";
+import SafeImage from "@/components/ui/SafeImage";
 import Link from "next/link";
 import BettingSiteWidget from "@/components/ads/BettingSiteWidget";
 import { Layers, TrendingUp } from "lucide-react";
@@ -75,8 +76,8 @@ export default function AccumulatorPage() {
                       className="flex items-center gap-3 px-4 py-3 hover:bg-base-200/50 transition-colors"
                     >
                       <div className="flex items-center gap-1.5 flex-shrink-0">
-                        <img src={match.homeTeam.logo} alt="" className="w-5 h-5 object-contain" onError={(e)=>{(e.target as HTMLImageElement).style.display='none'}} />
-                        <img src={match.awayTeam.logo} alt="" className="w-5 h-5 object-contain" onError={(e)=>{(e.target as HTMLImageElement).style.display='none'}} />
+                        <SafeImage src={match.homeTeam.logo} alt="" className="w-5 h-5 object-contain" />
+                        <SafeImage src={match.awayTeam.logo} alt="" className="w-5 h-5 object-contain" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold truncate">

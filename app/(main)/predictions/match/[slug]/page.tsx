@@ -6,6 +6,7 @@ import clsx from "clsx";
 import type { Metadata } from "next";
 import type { TeamForm } from "@/types";
 import BettingSiteWidget from "@/components/ads/BettingSiteWidget";
+import SafeImage from "@/components/ui/SafeImage";
 import { BETTING_SITES } from "@/lib/mockData";
 
 interface Props {
@@ -79,11 +80,11 @@ export default function MatchDetailPage({ params }: Props) {
           {/* Home */}
           <div className="flex-1 text-center">
             <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-white/20 mx-auto mb-2 flex items-center justify-center overflow-hidden">
-              <img
+              <SafeImage
                 src={match.homeTeam.logo}
                 alt={match.homeTeam.name}
                 className="w-14 h-14 sm:w-20 sm:h-20 object-contain"
-                onError={(e) => { (e.target as HTMLImageElement).style.opacity = "0"; }}
+                hideOnError={false}
               />
             </div>
             <p className="font-bold text-base sm:text-lg leading-tight">{match.homeTeam.name}</p>
@@ -110,11 +111,11 @@ export default function MatchDetailPage({ params }: Props) {
           {/* Away */}
           <div className="flex-1 text-center">
             <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-full bg-white/20 mx-auto mb-2 flex items-center justify-center overflow-hidden">
-              <img
+              <SafeImage
                 src={match.awayTeam.logo}
                 alt={match.awayTeam.name}
                 className="w-14 h-14 sm:w-20 sm:h-20 object-contain"
-                onError={(e) => { (e.target as HTMLImageElement).style.opacity = "0"; }}
+                hideOnError={false}
               />
             </div>
             <p className="font-bold text-base sm:text-lg leading-tight">{match.awayTeam.name}</p>

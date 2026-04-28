@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Trophy, Eye, EyeOff, Mail, Lock, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
@@ -156,5 +156,13 @@ export default function LoginPage() {
         <Link href="/privacy-policy" className="hover:text-primary">Privacy Policy</Link>
       </p>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-md"><div className="bg-base-100 border border-base-300 rounded-2xl shadow-xl p-8 animate-pulse h-96" /></div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

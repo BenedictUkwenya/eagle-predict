@@ -1,5 +1,6 @@
 import { LEAGUES, MATCHES, getMatchesByLeague } from "@/lib/mockData";
 import MatchCard from "@/components/predictions/MatchCard";
+import SafeImage from "@/components/ui/SafeImage";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -44,11 +45,10 @@ export default function LeaguePage({ params }: Props) {
       <div className="bg-gradient-to-r from-primary to-blue-700 rounded-2xl p-6 mb-6 text-white">
         <div className="flex items-center gap-4">
           <div className="w-12 h-8 rounded overflow-hidden bg-white/20 flex-shrink-0">
-            <img
+            <SafeImage
               src={`https://flagcdn.com/w80/${league.countryCode.toLowerCase()}.png`}
               alt={league.country}
               className="w-full h-full object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           </div>
           <div>
