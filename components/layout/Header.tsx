@@ -135,9 +135,9 @@ export default function Header() {
                 <Trophy size={18} className="text-white" />
               </div>
               <span className="font-display font-bold text-xl text-white hidden sm:block">
-                eagle<span className="text-yellow-300">Predict</span>
+                LitreGre<span className="text-amber-300"> Prediction</span>
               </span>
-              <span className="font-display font-bold text-xl text-white sm:hidden">EP</span>
+              <span className="font-display font-bold text-xl text-white sm:hidden">LG</span>
             </Link>
 
             {/* Desktop Nav */}

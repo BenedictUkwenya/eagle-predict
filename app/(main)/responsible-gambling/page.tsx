@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Responsible Gambling – EaglePredict",
+  title: "Responsible Gambling – LitreGre Prediction",
 };
 
 export default function ResponsibleGamblingPage() {

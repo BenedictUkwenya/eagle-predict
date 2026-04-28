@@ -21,8 +21,8 @@ const beVietnamPro = Be_Vietnam_Pro({
 
 export const metadata: Metadata = {
   title: {
-    default: "EaglePredict – Free Daily Football Predictions & Tips",
-    template: "%s | EaglePredict",
+    default: "LitreGre Prediction – Free Daily Football Predictions & Tips",
+    template: "%s | LitreGre Prediction",
   },
   description:
     "Get free daily football predictions, tips and analysis for all major leagues. Expert picks for Premier League, La Liga, Champions League, Serie A, Bundesliga and more.",
@@ -30,14 +30,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_NG",
-    url: "https://eaglepredict.com",
-    siteName: "EaglePredict",
-    title: "EaglePredict – Free Daily Football Predictions & Tips",
+    url: "https://litregreprediction.com",
+    siteName: "LitreGre Prediction",
+    title: "LitreGre Prediction – Free Daily Football Predictions & Tips",
     description: "Free daily football predictions, tips and analysis for all major leagues.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "EaglePredict – Free Daily Football Predictions",
+    title: "LitreGre Prediction – Free Daily Football Predictions",
     description: "Free daily football predictions, tips and analysis for all major leagues.",
   },
   robots: { index: true, follow: true },

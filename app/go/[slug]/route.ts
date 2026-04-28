@@ -22,6 +22,6 @@ export function GET(
   request: Request,
   { params }: { params: { slug: string } }
 ) {
-  const url = AFFILIATE_MAP[params.slug] ?? "https://eaglepredict.com/betting-sites";
+  const url = AFFILIATE_MAP[params.slug] ?? "https://litregreprediction.com/betting-sites";
   return NextResponse.redirect(url, { status: 302 });
 }

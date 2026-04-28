@@ -69,7 +69,7 @@ export default function Footer() {
                 <Trophy size={18} className="text-white" />
               </div>
               <span className="font-display font-bold text-xl">
-                Eagle<span className="text-secondary">Predict</span>
+                LitreGre<span className="text-amber-400"> Prediction</span>
               </span>
             </Link>
             <p className="text-sm text-neutral-content/70 mb-4 leading-relaxed">
@@ -157,7 +157,7 @@ export default function Footer() {
       <div className="border-t border-neutral-content/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-content/50">
-            <p>© {new Date().getFullYear()} EaglePredict. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} LitreGre Prediction. All rights reserved.</p>
             <div className="flex gap-4">
               <Link href="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
               <Link href="/terms-of-service" className="hover:text-primary transition-colors">Terms of Service</Link>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service – EaglePredict",
+  title: "Terms of Service – LitreGre Prediction",
 };
 
 export default function TermsPage() {
@@ -14,27 +14,27 @@ export default function TermsPage() {
         {[
           {
             title: "1. Acceptance of Terms",
-            body: "By accessing or using EaglePredict, you agree to be bound by these Terms of Service. If you disagree with any part, please do not use our service.",
+            body: "By accessing or using LitreGre Prediction, you agree to be bound by these Terms of Service. If you disagree with any part, please do not use our service.",
           },
           {
             title: "2. Disclaimer",
-            body: "EaglePredict provides football predictions for informational and entertainment purposes only. We do not guarantee the accuracy of predictions. Betting involves risk and you should never bet more than you can afford to lose.",
+            body: "LitreGre Prediction provides football predictions for informational and entertainment purposes only. We do not guarantee the accuracy of predictions. Betting involves risk and you should never bet more than you can afford to lose.",
           },
           {
             title: "3. Age Restriction",
-            body: "You must be 18 years or older to use this service. By using EaglePredict, you confirm that you are of legal age to gamble in your jurisdiction.",
+            body: "You must be 18 years or older to use this service. By using LitreGre Prediction, you confirm that you are of legal age to gamble in your jurisdiction.",
           },
           {
             title: "4. Affiliate Disclosure",
-            body: "Some links on EaglePredict are affiliate links. We may earn a commission when you sign up to a betting site through our links. This does not affect our editorial independence or the quality of our predictions.",
+            body: "Some links on LitreGre Prediction are affiliate links. We may earn a commission when you sign up to a betting site through our links. This does not affect our editorial independence or the quality of our predictions.",
           },
           {
             title: "5. Intellectual Property",
-            body: "All content on EaglePredict, including predictions, analysis, and design, is the property of EaglePredict and may not be reproduced without written permission.",
+            body: "All content on LitreGre Prediction, including predictions, analysis, and design, is the property of LitreGre Prediction and may not be reproduced without written permission.",
           },
           {
             title: "6. Limitation of Liability",
-            body: "EaglePredict is not liable for any financial losses incurred as a result of acting on our predictions. Users bet entirely at their own risk.",
+            body: "LitreGre Prediction is not liable for any financial losses incurred as a result of acting on our predictions. Users bet entirely at their own risk.",
           },
           {
             title: "7. Changes",
@@ -42,7 +42,7 @@ export default function TermsPage() {
           },
           {
             title: "8. Contact",
-            body: "For questions about these terms, please contact us at legal@eaglepredict.com.",
+            body: "For questions about these terms, please contact us at legal@litregreprediction.com.",
           },
         ].map((section) => (
           <div key={section.title}>

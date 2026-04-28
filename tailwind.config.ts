@@ -35,7 +35,7 @@ const config: Config = {
     themes: [
       {
         eaglelight: {
-          primary: "#1a7a3e",
+          primary: "#1a3a6b",
           "primary-content": "#ffffff",
           secondary: "#f97316",
           "secondary-content": "#ffffff",
@@ -53,7 +53,7 @@ const config: Config = {
           error: "#ef4444",
         },
         eagledark: {
-          primary: "#22c55e",
+          primary: "#3b82f6",
           "primary-content": "#ffffff",
           secondary: "#f97316",
           "secondary-content": "#ffffff",
@@ -61,9 +61,9 @@ const config: Config = {
           "accent-content": "#000000",
           neutral: "#374151",
           "neutral-content": "#f9fafb",
-          "base-100": "#0f2017",
-          "base-200": "#162d1f",
-          "base-300": "#1e3d2a",
+          "base-100": "#0c1a2e",
+          "base-200": "#112240",
+          "base-300": "#1a3057",
           "base-content": "#f9fafb",
           info: "#60a5fa",
           success: "#4ade80",
