@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Calendar, Trophy, Star, Gift } from "lucide-react";
+import { Calendar, Trophy, Gift } from "lucide-react";
 
 const NAV = [
   { href: "/", icon: Calendar, label: "Calendar" },
   { href: "/predictions", icon: Trophy, label: "Predictions" },
-  { href: "/betting-sites", icon: Star, label: "Betting Sites" },
   { href: "/betting-bonuses", icon: Gift, label: "Betting Bonus" },
 ];
 

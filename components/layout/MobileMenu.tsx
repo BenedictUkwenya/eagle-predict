@@ -9,14 +9,10 @@ import {
   ChevronDown,
   ChevronRight,
   LogIn,
+  Trophy,
   User,
   LogOut,
   Home,
-  Trophy,
-  Layers,
-  Star,
-  BookOpen,
-  ExternalLink,
 } from "lucide-react";
 
 interface NavChild {
@@ -107,12 +103,9 @@ export default function MobileMenu({ open, onClose, navLinks, session }: Props) 
             </div>
           </div>
         ) : (
-          <div className="px-5 py-3 border-b border-base-300 flex gap-2">
-            <Link href="/login" onClick={onClose} className="btn btn-outline btn-sm flex-1 gap-1">
+          <div className="px-5 py-3 border-b border-base-300">
+            <Link href="/login" onClick={onClose} className="btn btn-outline btn-sm w-full gap-1">
               <LogIn size={15} /> Login
-            </Link>
-            <Link href="/signup" onClick={onClose} className="btn btn-primary btn-sm flex-1">
-              Sign Up Free
             </Link>
           </div>
         )}
@@ -175,23 +168,6 @@ export default function MobileMenu({ open, onClose, navLinks, session }: Props) 
             )
           )}
 
-          {/* Popular betting sites quick links */}
-          <div className="px-5 pt-4 pb-2">
-            <p className="text-xs font-semibold text-base-content/50 uppercase tracking-wider mb-2">
-              Top Betting Sites
-            </p>
-            {["Betano", "Bet9ja", "1xBet", "Betway", "Stake"].map((site) => (
-              <Link
-                key={site}
-                href={`/go/${site.toLowerCase()}`}
-                onClick={onClose}
-                className="flex items-center justify-between py-2 text-sm hover:text-primary transition-colors"
-              >
-                <span>{site}</span>
-                <ExternalLink size={12} className="text-base-content/40" />
-              </Link>
-            ))}
-          </div>
         </nav>
 
         {/* Footer links */}

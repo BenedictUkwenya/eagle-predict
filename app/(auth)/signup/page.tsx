@@ -1,61 +1,87 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Trophy,
   Eye,
   EyeOff,
-  Mail,
+  Phone,
   Lock,
-  User,
   Check,
+  Send,
+  Link2,
   AlertCircle,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
 const BENEFITS = [
-  "Save your favourite predictions",
-  "Get email alerts for big matches",
-  "Personalised accumulator tips",
-  "Access exclusive premium tips",
+  "Create your secure betting PIN in seconds",
+  "Phone-first sign up with quick verification",
+  "Link verification with your phone number attached",
+  "Faster login with phone number + PIN",
 ];
 
 export default function SignupPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const hasInviteAccess = searchParams.has("invite");
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
+  const [showPin, setShowPin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [sentLink, setSentLink] = useState("");
 
-  const passwordStrength = (() => {
-    if (!password) return 0;
+  const pinStrength = (() => {
+    if (!pin) return 0;
     let score = 0;
-    if (password.length >= 8) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
+    if (pin.length >= 4) score++;
+    if (pin.length >= 5) score++;
+    if (!/^([0-9])\1+$/.test(pin)) score++;
+    if (!/^(0123|1234|1111|0000|4321|2222)$/.test(pin)) score++;
     return score;
   })();
 
-  const strengthLabel = ["", "Weak", "Fair", "Good", "Strong"][passwordStrength];
-  const strengthColor = ["", "bg-error", "bg-warning", "bg-info", "bg-success"][passwordStrength];
+  const strengthLabel = ["", "Weak", "Fair", "Good", "Strong"][pinStrength];
+  const strengthColor = ["", "bg-error", "bg-warning", "bg-info", "bg-success"][pinStrength];
+
+  useEffect(() => {
+    if (!hasInviteAccess) {
+      router.replace("/login?inviteRequired=1");
+    }
+  }, [hasInviteAccess, router]);
+
+  if (!hasInviteAccess) {
+    return null;
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setSentLink("");
 
-    if (password !== confirmPassword) {
-      setError("Passwords don't match.");
+    const normalizedPhone = phone.replace(/\D/g, "");
+
+    if (normalizedPhone.length < 10) {
+      setError("Please enter a valid phone number.");
       return;
     }
+
+    if (pin.length < 4) {
+      setError("PIN must be at least 4 digits.");
+      return;
+    }
+
+    if (pin !== confirmPin) {
+      setError("PINs do not match.");
+      return;
+    }
+
     if (!agreed) {
       setError("Please accept the terms and conditions.");
       return;
@@ -63,21 +89,34 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    // In a real app you'd POST to /api/auth/register first.
-    // Here we sign in directly (the mock provider accepts any valid credentials).
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: normalizedPhone,
+          pin,
+          agreed,
+        }),
+      });
 
-    setLoading(false);
+      const data = (await response.json()) as {
+        ok?: boolean;
+        error?: string;
+        verificationLink?: string;
+      };
 
-    if (result?.error) {
-      setError("Something went wrong. Please try again.");
-    } else {
-      toast.success(`Welcome to EaglePredict, ${name}! 🎉`);
-      router.push("/");
+      if (!response.ok || !data.ok) {
+        setError(data.error ?? "Could not create your account. Please try again.");
+        return;
+      }
+
+      setSentLink(data.verificationLink ?? "");
+      toast.success("Registration started. Verification link sent.");
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -90,10 +129,10 @@ export default function SignupPage() {
             <Trophy size={24} className="text-white" />
           </div>
           <h2 className="font-display font-bold text-3xl mb-2">
-            Join Eagle<span className="text-primary">Predict</span>
+            Join LitreGre <span className="text-primary">Prediction</span>
           </h2>
           <p className="text-base-content/60 text-sm mb-6">
-            Get free daily football predictions from expert analysts. Thousands of punters trust us every day.
+            Open your create-PIN registration page, agree to terms, and receive a secure verification link tied to your phone number.
           </p>
           <ul className="space-y-3">
             {BENEFITS.map((b) => (
@@ -108,9 +147,9 @@ export default function SignupPage() {
 
           <div className="mt-8 bg-primary/5 border border-primary/20 rounded-xl p-4">
             <p className="text-xs text-base-content/60">
-              "EaglePredict has been my go-to prediction site for over a year. The analysis is detailed and the tips are accurate."
+              "I signed up in under a minute with my phone and PIN. The verification link flow is clean and simple."
             </p>
-            <p className="text-xs font-semibold mt-2">— Olumide A., Lagos</p>
+            <p className="text-xs font-semibold mt-2">- Chinedu I., Abuja</p>
           </div>
         </div>
 
@@ -121,10 +160,13 @@ export default function SignupPage() {
             <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center mx-auto mb-2">
               <Trophy size={20} className="text-white" />
             </div>
-            <h1 className="font-display font-bold text-xl">Create Account</h1>
+            <h1 className="font-display font-bold text-xl">Create PIN</h1>
           </div>
 
-          <h2 className="hidden md:block font-bold text-xl mb-5">Create your free account</h2>
+          <h2 className="hidden md:block font-bold text-xl mb-1">Create your PIN</h2>
+          <p className="hidden md:block text-sm text-base-content/60 mb-5">
+            Register with your phone number and we will send a verification link.
+          </p>
 
           {/* Error */}
           {error && (
@@ -134,109 +176,107 @@ export default function SignupPage() {
             </div>
           )}
 
+          {sentLink && (
+            <div className="alert alert-success mb-4 py-2 text-sm">
+              <div className="flex flex-col gap-2 w-full">
+                <div className="flex items-center gap-2">
+                  <Send size={14} />
+                  <span>Verification link generated and sent.</span>
+                </div>
+                <a
+                  href={sentLink}
+                  className="inline-flex items-center gap-1 text-primary underline break-all"
+                >
+                  <Link2 size={12} />
+                  Open verification link
+                </a>
+              </div>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-3.5">
-            {/* Name */}
+            {/* Phone */}
             <div className="form-control">
               <label className="label py-1">
-                <span className="label-text text-sm font-medium">Full name</span>
+                <span className="label-text text-sm font-medium">Phone number</span>
               </label>
               <div className="relative">
-                <User size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
+                <Phone size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
                 <input
-                  type="text"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  type="tel"
+                  placeholder="08012345678"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   required
                   className="input input-bordered w-full pl-9 text-sm"
-                  autoComplete="name"
+                  autoComplete="tel"
                 />
               </div>
             </div>
 
-            {/* Email */}
+            {/* PIN */}
             <div className="form-control">
               <label className="label py-1">
-                <span className="label-text text-sm font-medium">Email address</span>
-              </label>
-              <div className="relative">
-                <Mail size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
-                <input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="input input-bordered w-full pl-9 text-sm"
-                  autoComplete="email"
-                />
-              </div>
-            </div>
-
-            {/* Password */}
-            <div className="form-control">
-              <label className="label py-1">
-                <span className="label-text text-sm font-medium">Password</span>
+                <span className="label-text text-sm font-medium">Create PIN</span>
               </label>
               <div className="relative">
                 <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
                 <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Minimum 6 characters"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type={showPin ? "text" : "password"}
+                  placeholder="Minimum 4 digits"
+                  value={pin}
+                  onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
                   required
-                  minLength={6}
+                  minLength={4}
                   className="input input-bordered w-full pl-9 pr-10 text-sm"
                   autoComplete="new-password"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowPin(!showPin)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/40 hover:text-base-content"
                 >
-                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                  {showPin ? <EyeOff size={15} /> : <Eye size={15} />}
                 </button>
               </div>
-              {/* Password strength */}
-              {password && (
+              {pin && (
                 <div className="mt-1.5 space-y-1">
                   <div className="flex gap-1">
                     {[1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
                         className={`h-1 flex-1 rounded-full transition-colors ${
-                          i <= passwordStrength ? strengthColor : "bg-base-300"
+                          i <= pinStrength ? strengthColor : "bg-base-300"
                         }`}
                       />
                     ))}
                   </div>
                   <p className="text-[10px] text-base-content/60">
-                    Password strength: <span className="font-semibold">{strengthLabel}</span>
+                    PIN strength: <span className="font-semibold">{strengthLabel}</span>
                   </p>
                 </div>
               )}
             </div>
 
-            {/* Confirm password */}
+            {/* Confirm PIN */}
             <div className="form-control">
               <label className="label py-1">
-                <span className="label-text text-sm font-medium">Confirm password</span>
+                <span className="label-text text-sm font-medium">Confirm PIN</span>
               </label>
               <div className="relative">
                 <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
                 <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Repeat your password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  type={showPin ? "text" : "password"}
+                  placeholder="Repeat your PIN"
+                  value={confirmPin}
+                  onChange={(e) => setConfirmPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
                   required
                   className={`input input-bordered w-full pl-9 text-sm ${
-                    confirmPassword && confirmPassword !== password ? "input-error" : ""
+                    confirmPin && confirmPin !== pin ? "input-error" : ""
                   }`}
                   autoComplete="new-password"
                 />
-                {confirmPassword && confirmPassword === password && (
+                {confirmPin && confirmPin === pin && (
                   <Check size={15} className="absolute right-3 top-1/2 -translate-y-1/2 text-success" />
                 )}
               </div>
@@ -259,7 +299,7 @@ export default function SignupPage() {
                 <Link href="/privacy-policy" className="text-primary hover:underline">
                   Privacy Policy
                 </Link>
-                . I confirm I am 18+ years old.
+                . I confirm I am 18+ years old and I consent to receive a verification link for registration.
               </span>
             </label>
 
@@ -272,7 +312,7 @@ export default function SignupPage() {
               {loading ? (
                 <span className="loading loading-spinner loading-sm" />
               ) : (
-                "Create Free Account"
+                "Register & Send Verification Link"
               )}
             </button>
           </form>

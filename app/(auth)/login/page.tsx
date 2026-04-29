@@ -1,38 +1,50 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { Trophy, Eye, EyeOff, Mail, Lock, AlertCircle } from "lucide-react";
+import { Trophy, Eye, EyeOff, Phone, Lock, AlertCircle } from "lucide-react";
 import toast from "react-hot-toast";
 
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
+  const verified = searchParams.get("verified") === "1";
+  const phoneFromQuery = searchParams.get("phone") ?? "";
+  const inviteRequired = searchParams.get("inviteRequired") === "1";
+  const invalidLink = searchParams.get("invalidLink") === "1";
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [pin, setPin] = useState("");
+  const [showPin, setShowPin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (phoneFromQuery) {
+      setPhone(phoneFromQuery.replace(/\D/g, ""));
+    }
+  }, [phoneFromQuery]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setLoading(true);
 
+    const normalizedPhone = phone.replace(/\D/g, "");
+
     const result = await signIn("credentials", {
-      email,
-      password,
+      phone: normalizedPhone,
+      pin,
       redirect: false,
     });
 
     setLoading(false);
 
     if (result?.error) {
-      setError("Invalid email or password. Please try again.");
+      setError("Invalid phone number or PIN. Please try again.");
     } else {
       toast.success("Welcome back! 🎉");
       router.push(callbackUrl);
@@ -52,7 +64,7 @@ function LoginContent() {
             Welcome back
           </h1>
           <p className="text-base-content/60 text-sm mt-1">
-            Sign in to your EaglePredict account
+            Sign in to your LitreGre Prediction account
           </p>
         </div>
 
@@ -60,9 +72,30 @@ function LoginContent() {
         <div className="alert alert-info mb-4 py-2">
           <AlertCircle size={14} className="flex-shrink-0" />
           <div className="text-xs">
-            <strong>Demo:</strong> Use any email + password (6+ chars) to sign in
+            <strong>Demo:</strong> Use any phone number (10+ digits) + PIN (4+ digits)
           </div>
         </div>
+
+        {verified && (
+          <div className="alert alert-success mb-4 py-2 text-sm">
+            <AlertCircle size={14} />
+            Your registration link was verified. Enter your PIN to continue.
+          </div>
+        )}
+
+        {inviteRequired && (
+          <div className="alert alert-warning mb-4 py-2 text-sm">
+            <AlertCircle size={14} />
+            Registration is invite-only. Open your signup link to continue.
+          </div>
+        )}
+
+        {invalidLink && (
+          <div className="alert alert-error mb-4 py-2 text-sm">
+            <AlertCircle size={14} />
+            This verification link is invalid or expired.
+          </div>
+        )}
 
         {/* Error */}
         {error && (
@@ -73,51 +106,51 @@ function LoginContent() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email */}
+          {/* Phone */}
           <div className="form-control">
             <label className="label py-1">
-              <span className="label-text text-sm font-medium">Email address</span>
+              <span className="label-text text-sm font-medium">Phone number</span>
             </label>
             <div className="relative">
-              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
+              <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
               <input
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="tel"
+                placeholder="08012345678"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
                 className="input input-bordered w-full pl-9 text-sm"
-                autoComplete="email"
+                autoComplete="tel"
               />
             </div>
           </div>
 
-          {/* Password */}
+          {/* PIN */}
           <div className="form-control">
             <label className="label py-1">
-              <span className="label-text text-sm font-medium">Password</span>
+              <span className="label-text text-sm font-medium">PIN</span>
               <Link href="/forgot-password" className="label-text-alt text-primary hover:underline text-xs">
-                Forgot password?
+                Forgot PIN?
               </Link>
             </label>
             <div className="relative">
               <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
               <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                type={showPin ? "text" : "password"}
+                placeholder="Enter your PIN"
+                value={pin}
+                onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 6))}
                 required
-                minLength={6}
+                minLength={4}
                 className="input input-bordered w-full pl-9 pr-10 text-sm"
                 autoComplete="current-password"
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPin(!showPin)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content/40 hover:text-base-content"
               >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showPin ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
           </div>
@@ -136,17 +169,9 @@ function LoginContent() {
           </button>
         </form>
 
-        {/* Divider */}
-        <div className="divider text-xs text-base-content/40 my-4">
-          Don&apos;t have an account?
+        <div className="mt-4 rounded-lg border border-base-300 bg-base-200/60 px-3 py-2 text-xs text-base-content/70">
+          Need an account? Use your invite link to open the registration page.
         </div>
-
-        <Link
-          href="/signup"
-          className="btn btn-outline btn-primary w-full"
-        >
-          Create Free Account
-        </Link>
       </div>
 
       <p className="text-center text-xs text-base-content/40 mt-4">

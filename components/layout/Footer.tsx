@@ -23,17 +23,6 @@ const FOOTER_LEAGUES = [
   { label: "CAF Champions League", href: "/league/caf-champions-league" },
 ];
 
-const FOOTER_SITES = [
-  { label: "Best Betting Sites", href: "/betting-sites" },
-  { label: "Welcome Bonuses", href: "/betting-bonuses" },
-  { label: "Betting Academy", href: "/betting-academy" },
-  { label: "Promo Codes", href: "/promo-codes" },
-  { label: "Betano Nigeria", href: "/go/betano" },
-  { label: "Bet9ja", href: "/go/bet9ja" },
-  { label: "1xBet Nigeria", href: "/go/1xbet" },
-  { label: "Betway Nigeria", href: "/go/betway" },
-];
-
 export default function Footer() {
   return (
     <footer className="bg-neutral text-neutral-content">
@@ -61,7 +50,7 @@ export default function Footer() {
 
       {/* Main footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
@@ -132,24 +121,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Betting */}
-          <div>
-            <h4 className="font-semibold text-sm uppercase tracking-wider mb-4 text-neutral-content/50">
-              Betting
-            </h4>
-            <ul className="space-y-2">
-              {FOOTER_SITES.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-neutral-content/70 hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </div>
 

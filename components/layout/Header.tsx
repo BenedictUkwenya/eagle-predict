@@ -12,8 +12,6 @@ import {
   Moon,
   ChevronDown,
   Trophy,
-  Star,
-  BookOpen,
   Layers,
   LogIn,
   User,
@@ -55,47 +53,6 @@ const NAV_LINKS = [
     children: [
       { label: "Accumulator of the Day", href: "/predictions/accumulator-tips" },
       { label: "Bet of the Day", href: "/predictions/bet-of-the-day" },
-    ],
-  },
-  {
-    label: "By Day",
-    href: "/predictions/tomorrow",
-    icon: <Star size={16} />,
-    children: [
-      { label: "Today's Predictions", href: "/" },
-      { label: "Tomorrow's Predictions", href: "/predictions/tomorrow" },
-      { label: "Monday Predictions", href: "/predictions/monday-football" },
-      { label: "Tuesday Predictions", href: "/predictions/tuesday-football" },
-      { label: "Wednesday Predictions", href: "/predictions/wednesday-football" },
-      { label: "Thursday Predictions", href: "/predictions/thursday-football" },
-      { label: "Friday Predictions", href: "/predictions/friday-football" },
-      { label: "Saturday Predictions", href: "/predictions/saturday-football" },
-      { label: "Sunday Predictions", href: "/predictions/sunday-football" },
-    ],
-  },
-  {
-    label: "Betting Sites",
-    href: "/betting-sites",
-    icon: <Star size={16} />,
-    children: [
-      { label: "Best Betting Sites", href: "/betting-sites" },
-      { label: "Welcome Bonuses", href: "/betting-bonuses" },
-      { label: "No Deposit Bonuses", href: "/betting-bonuses/no-deposit-bonus-nigeria" },
-      { label: "Loyalty Programs", href: "/betting-bonuses/loyalty-program-nigeria" },
-      { label: "Promo Codes", href: "/promo-codes" },
-    ],
-  },
-  {
-    label: "Academy",
-    href: "/betting-academy",
-    icon: <BookOpen size={16} />,
-    children: [
-      { label: "Betting Academy", href: "/betting-academy" },
-      { label: "How to Bet on Football", href: "/betting-academy/how-to-bet-on-football" },
-      { label: "Betting Strategies", href: "/betting-academy/best-football-betting-strategies" },
-      { label: "Understanding Odds", href: "/betting-academy/understanding-football-odds" },
-      { label: "Accumulator Guide", href: "/betting-academy/accumulator-betting-guide" },
-      { label: "Bankroll Management", href: "/betting-academy/bankroll-management" },
     ],
   },
 ];
@@ -252,9 +209,6 @@ export default function Header() {
                   <Link href="/login" className="btn btn-ghost btn-sm gap-1.5 text-white hover:bg-white/10">
                     <LogIn size={15} />
                     Login
-                  </Link>
-                  <Link href="/signup" className="btn btn-sm bg-white text-primary hover:bg-white/90 border-0 gap-1.5">
-                    Sign Up
                   </Link>
                 </div>
               )}
