@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -23,7 +23,7 @@ const BENEFITS = [
   "Faster login with phone number + PIN",
 ];
 
-export default function SignupPage() {
+function SignupContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const hasInviteAccess = searchParams.has("invite");
@@ -327,5 +327,22 @@ export default function SignupPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full max-w-4xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="hidden md:block rounded-2xl bg-base-200/60 animate-pulse min-h-[520px]" />
+            <div className="rounded-2xl bg-base-100 border border-base-300 shadow-xl p-8 animate-pulse min-h-[520px]" />
+          </div>
+        </div>
+      }
+    >
+      <SignupContent />
+    </Suspense>
   );
 }
